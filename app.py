@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
 import sqlite3
 import datetime
-from utils import check_budget
+from utils import check_budget, monthly_report
 
 app = Flask(__name__)
 DB_PATH = "database/expense_tracker.db"
@@ -36,6 +36,7 @@ def set_budget():
 
     return render_template("set_budget.html")
 
+# add expenses
 @app.route("/addExpense", methods=["GET", "POST"])
 def add_expense():
     conn = sqlite3.connect(DB_PATH)
@@ -60,6 +61,15 @@ def add_expense():
         return redirect(url_for("index"))
 
     return render_template("add_expense.html")
+
+# view all reports
+@app.route("/viewReport", methods=["GET", "POST"])
+def report():
+    if request.method == "POST":
+        month = request.form["month"]
+        data = monthly_report(month)
+        return render_template("my_reports.html", month=month, data=data)
+    return render_template("my_reports.html", data=None)
 
 if __name__ == "__main__":
     app.run()

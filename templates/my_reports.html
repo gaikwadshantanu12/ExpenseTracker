@@ -5,5 +5,26 @@
 </head>
 <body>
     <h2>My Monthly Report</h2>
+    <form method="post">
+        Month (YYYY-MM): <input name="month" required>
+        <button type="submit">Generate Reports</button>
+    </form>
+    
+    {% if data %}
+    <table border="1">
+        <tr>
+            <th>ExpenseCategory</th>
+            <th>Amount Spent</th>
+            <th>Budget</th>
+        </tr>
+        {% for cat, spent, budget in data %}
+        <tr>
+            <td>{{ cat }}</td>
+            <td>{{ spent }}</td>
+            <td>{{ budget }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
 </body>
 </html>
